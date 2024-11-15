@@ -17,6 +17,10 @@ public protocol UseCaseTrackableSource {
     var tracker: Trackable { get }
 }
 
+extension UseCaseTrackableSource where Self: Trackable {
+    public var tracker: Trackable { self }
+}
+
 extension ReactiveUseCase {
     public func makeTrackable(_ trackableSource: UseCaseTrackableSource) -> some ReactiveUseCase<Self.Input> {
         TrackableUseCase(sourceUseCase: self, trackableSource: trackableSource)
