@@ -22,7 +22,7 @@ extension UseCaseTrackableSource where Self: Trackable {
 }
 
 extension ReactiveUseCase {
-    public func makeTrackable(_ trackableSource: UseCaseTrackableSource) -> some ReactiveUseCase<Self.Input> {
+    public func makeTrackable(_ trackableSource: UseCaseTrackableSource) -> some ReactiveUseCase<Self.Input, Self.Output.Output, Self.Output.Failure> {
         TrackableUseCase(sourceUseCase: self, trackableSource: trackableSource)
     }
 }

@@ -16,7 +16,7 @@ public protocol UseCaseRetrySource {
 }
 
 extension ReactiveUseCase {
-    public func makeRetryable<RetrySource>(retrySource: RetrySource, when condition: ((Error) -> Bool)? = nil) -> some ReactiveUseCase<Self.Input> where RetrySource: UseCaseRetrySource {
+    public func makeRetryable<RetrySource>(retrySource: RetrySource, when condition: ((Self.Output.Failure) -> Bool)? = nil) -> some ReactiveUseCase<Self.Input, Self.Output.Output, Self.Output.Failure> where RetrySource: UseCaseRetrySource {
         RetryableUseCase(sourceUseCase: self, retrySource: retrySource, when: condition)
     }
 }
@@ -24,9 +24,9 @@ extension ReactiveUseCase {
 private struct RetryableUseCase<UseCase, RetrySource>: ReactiveUseCase where UseCase: ReactiveUseCase, RetrySource: UseCaseRetrySource {
     private let sourceUseCase: UseCase
     private let retrySource: RetrySource
-    private let condition: ((Error) -> Bool)?
+    private let condition: ((Self.Output.Failure) -> Bool)?
 
-    init(sourceUseCase: UseCase, retrySource: RetrySource, when condition: ((Error) -> Bool)?) {
+    init(sourceUseCase: UseCase, retrySource: RetrySource, when condition: ((Self.Output.Failure) -> Bool)?) {
         self.sourceUseCase = sourceUseCase
         self.retrySource = retrySource
         self.condition = condition

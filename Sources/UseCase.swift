@@ -21,4 +21,9 @@ extension UseCase where Input == Void {
     }
 }
 
-public protocol ReactiveUseCase<Input>: UseCase where Output: Publisher {}
+public protocol ReactiveUseCase<Input, ReactiveOutput, ReactiveFailure>: UseCase where Output: Publisher<ReactiveOutput, ReactiveFailure> {
+    associatedtype ReactiveOutput
+    associatedtype ReactiveFailure
+}
+
+public enum UseCases {}
